@@ -4,9 +4,10 @@
 package br.ufsm;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
-import org.example.App;
+import br.ufsm.App;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
     @Test void appHasAGreeting() {
