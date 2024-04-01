@@ -18,8 +18,17 @@ public class ConversorNumeros {
     public static int converteRtoI(String num_romano) {
     	num_romano = num_romano.toUpperCase();
     	int acum = 0;
-    	for(int i = 0; i < num_romano.length(); i++) {
-    		acum += tabela.get(num_romano.charAt(i));
+    	int ultimo_viz_dir = 0;
+    	for(int i = num_romano.length() - 1; i >= 0; i--) {
+    		int atual = tabela.get(num_romano.charAt(i));
+    		int mult = 1;
+    		if(atual < ultimo_viz_dir) {
+    			mult = -1;
+    		}
+    		acum += tabela.get(num_romano.charAt(i))*mult;
+    		
+    		ultimo_viz_dir = atual;
+    		
     	}
     	return acum;
     }

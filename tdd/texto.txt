@@ -1,0 +1,4 @@
+Eu entendi que o TDD é um modo de programar diferente, orientado a testes.
+Ao invés de testes após o "produto" estar pronto, na hora da criação do código os testes são feitos, até mesmo antes de criar a função que será testada.
+É um método interessante pois os erros podem estar em uma função no começo do código, então testando parte a parte evita ter que refazer muita coisa
+Gostei da analogia do carro: Ao invés de testar o funcionamento de um carro apenas após o carro estar pronto, testa todas as peças antes de montar.
