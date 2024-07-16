@@ -5,17 +5,32 @@ from selenium.webdriver.support import expected_conditions as EC
 import requests
 import time
 
-
+# Função principal que inicia o navegador, executa os testes e fecha o navegador
 def main():
     driver = webdriver.Chrome()
     driver.get("https://www.uni-hamburg.de/")
-    test_link_validity(driver)
+    testar_navegacao_para_carreiras_academicas(driver)
+    time.sleep(3)
+    testar_navegacao_para_universidade_de_excelencia(driver)
+    time.sleep(3)
+    testar_visibilidade_video(driver)
+    time.sleep(3)
+    testar_visibilidade_videos(driver)
+    time.sleep(3)
+    testar_busca_por_deep_learning(driver)
+    time.sleep(3)
+    testar_visibilidade_imagem_homepage(driver)
+    time.sleep(3)
+    testar_visibilidade_imagem_estudantes(driver)
+    time.sleep(3)
+    testar_validade_links(driver)
+    time.sleep(3)
+    testar_alt_imagem_nao_vazio(driver)
+    time.sleep(3)
     driver.quit()
 
-
-# verifica botões
-
-def test_navigate_to_wissenschaftliche_karrierewege(driver):
+# Verifica se a navegação para "Carreiras Acadêmicas" funciona corretamente
+def testar_navegacao_para_carreiras_academicas(driver):
     button = driver.find_element(By.CLASS_NAME, "Wiss")
     button.click()
     title = driver.title
@@ -23,8 +38,8 @@ def test_navigate_to_wissenschaftliche_karrierewege(driver):
     time.sleep(1)
     driver.back()
 
-
-def test_navigate_to_exzellenzuniversitat(driver):
+# Verifica se a navegação para "Universidade de Excelência" funciona corretamente
+def testar_navegacao_para_universidade_de_excelencia(driver):
     button = driver.find_element(By.CLASS_NAME, "Ex")
     button.click()
     title = driver.title
@@ -32,10 +47,8 @@ def test_navigate_to_exzellenzuniversitat(driver):
     time.sleep(1)
     driver.back()
 
-
-# verifica busca
-
-def test_search_for_deep_learning(driver):
+# Verifica se a busca por "deep learning" funciona corretamente
+def testar_busca_por_deep_learning(driver):
     wait = WebDriverWait(driver, 5)
     search_button = wait.until(EC.element_to_be_clickable((By.ID, "suchea")))
     search_button.click()
@@ -47,27 +60,26 @@ def test_search_for_deep_learning(driver):
     assert "Suche auf" in title, "A busca não foi realizada corretamente"
     driver.back()
 
-
-#verifica imagens
-
-def test_image_visibility_homepage(driver):
+# Verifica se a imagem "Zur Homepage" está visível na página inicial
+def testar_visibilidade_imagem_homepage(driver):
     wait = WebDriverWait(driver, 10)
     image = wait.until(EC.presence_of_element_located((By.XPATH, "//img[@title='Zur Homepage']")))
     assert image.is_displayed(), "A imagem 'Zur Homepage' não está visível"
 
-
-def test_image_visibility_students(driver):
+# Verifica se a imagem "Studierende an der Universität Hamburg" está visível
+def testar_visibilidade_imagem_estudantes(driver):
     wait = WebDriverWait(driver, 10)
     image = wait.until(EC.presence_of_element_located((By.XPATH, "//img[@alt='Studierende an der Universität Hamburg']")))
     assert image.is_displayed(), "A imagem 'Studierende an der Universität Hamburg' não está visível"
 
+# Verifica se o vídeo com a classe "plyr__poster" está visível
+def testar_visibilidade_video(driver):
+    wait = WebDriverWait(driver, 10)
+    video = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "plyr__poster")))
+    assert video.is_displayed(), "O vídeo com a classe 'plyr__poster' não está visível"
 
-# verifica video
-def test_video_visibility(driver):
-    video = driver.find_element(By.CLASS_NAME, "plyr__poster")
-    assert video.is_displayed()     
-
-def test_video_visibility2(driver):
+# Verifica se os vídeos na página de linguagem de sinais estão visíveis e possuem fontes
+def testar_visibilidade_videos(driver):
     button = driver.find_element(By.CLASS_NAME, "gebaerdensprache")
     button.click()
     videos = driver.find_elements(By.TAG_NAME, "video")
@@ -82,9 +94,9 @@ def test_video_visibility2(driver):
             type_ = source.get_attribute("type")
             assert src is not None and src.strip() != "", f"Fonte do vídeo sem URL: {source.get_attribute('outerHTML')}"
             assert type_ is not None and type_.strip() != "", f"Fonte do vídeo sem tipo especificado: {source.get_attribute('outerHTML')}"
-            
 
-def test_link_validity(driver):
+# Verifica se os links estão válidos
+def testar_validade_links(driver):
     button = driver.find_element(By.CLASS_NAME, "gebaerdensprache")
     button.click()
     link = driver.find_element(By.XPATH, "//a[contains(text(), 'Website des Instituts für Deutsche Gebärdensprache der Universität Hamburg')]")
@@ -96,16 +108,12 @@ def test_link_validity(driver):
     except requests.exceptions.RequestException as e:
         assert False, f"Erro ao tentar acessar o link: {e}"
 
-
-# verifica alt
-def test_image_alt_not_empty(driver):
+# Verifica se as imagens possuem o atributo alt preenchido
+def testar_alt_imagem_nao_vazio(driver):
     images = driver.find_elements(By.TAG_NAME, "img")
     for image in images:
         alt_text = image.get_attribute("alt")
         assert alt_text is not None and alt_text.strip() != "", f"Imagem com src '{image.get_attribute('src')}' possui atributo alt vazio."
-
-
-
 
 if __name__ == '__main__':
     main()
